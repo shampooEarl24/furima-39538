@@ -139,18 +139,6 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("First name kana can't be blank")
       end
-    
-      # ...
     end
-    これによって、姓（全角）や名（全角）、姓（カナ）、名（カナ）が空の場合にエラーが発生することを確認できます。テストを実行して、想定通りの結果が得られるか確認してみてください。
-    
-    
-    
-    
-    
-    
-    end
-
-    
   end
 end
