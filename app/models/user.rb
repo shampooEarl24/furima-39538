@@ -9,6 +9,7 @@ class User < ApplicationRecord
           # 半角英数字（空文字NG）以外の場合には、メッセージを出す
           PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i.freeze
           validates_format_of :password, with: PASSWORD_REGEX, message: 'Include both letters and numbers'
+          validates :nickname, uniqueness: true
       
           # 全角ひらがな、全角カタカナ、漢字
           validates :last_name, format: { with: /\A[ぁ-んァ-ン一-龥]+\z/ }
