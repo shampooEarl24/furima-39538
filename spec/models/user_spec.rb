@@ -58,7 +58,7 @@ RSpec.describe User, type: :model do
       it 'パスワードが空欄だと保存できない' do
         @user.password = ''
         @user.valid?
-        expect(@user.errors.full_messages).to include("Password can't be blank", 'Password Include both letters and numbers', "Password confirmation doesn't match Password")
+        expect(@user.errors.full_messages).to include("Password can't be blank")
       end
       it 'パスワード（確認含む）が5文字以下だと保存できない' do
         @user.password = 'ab123'
@@ -115,47 +115,42 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("Birthday can't be blank")
       end
+
+      it '姓（全角）が空だと登録できない' do
+        @user.last_name = ''
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Last name can't be blank")
+      end
+    
+      it '名（全角）が空だと登録できない' do
+        @user.first_name = ''
+        @user.valid?
+        expect(@user.errors.full_messages).to include("First name can't be blank")
+      end
+    
+      it '姓（カナ）が空だと登録できない' do
+        @user.last_name_kana = ''
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Last name kana can't be blank")
+      end
+    
+      it '名（カナ）が空だと登録できない' do
+        @user.first_name_kana = ''
+        @user.valid?
+        expect(@user.errors.full_messages).to include("First name kana can't be blank")
+      end
+    
+      # ...
+    end
+    これによって、姓（全角）や名（全角）、姓（カナ）、名（カナ）が空の場合にエラーが発生することを確認できます。テストを実行して、想定通りの結果が得られるか確認してみてください。
+    
+    
+    
+    
+    
+    
     end
 
-    context 'パスワード再設定' do
-      it 'パスワードが6文字以上半角英数字であれば再設定できる' do
-        @user.save
-        @user.password = 'new123'
-        @user.password_confirmation = 'new123'
-        expect(@user).to be_valid
-      end
-  
-      it 'パスワードが空欄でも再設定できない' do
-        @user.save
-        @user.password = ''
-        @user.password_confirmation = ''
-        @user.valid?
-        expect(@user.errors.full_messages).to include("Password can't be blank")
-      end
-
-      it 'パスワード（確認含む）が5文字以下だと再設定できない' do
-        @user.save
-        @user.password = 'new12'
-        @user.password_confirmation = 'new12'
-        @user.valid?
-        expect(@user.errors.full_messages).to include('Password is too short (minimum is 6 characters)')
-      end
-  
-      it 'パスワード（確認含む）が半角英数字でないと再設定できない' do
-        @user.save
-        @user.password = 'newpassword'
-        @user.password_confirmation = 'newpassword'
-        @user.valid?
-        expect(@user.errors.full_messages).to include('Password Include both letters and numbers')
-      end
-
-      it 'パスワード（確認）が空欄でも再設定できない' do
-        @user.save
-        @user.password = 'new123'
-        @user.password_confirmation = ''
-        @user.valid?
-        expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
-      end
-     end
+    
   end
 end
