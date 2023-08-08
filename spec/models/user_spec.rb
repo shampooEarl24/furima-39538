@@ -48,7 +48,6 @@ RSpec.describe User, type: :model do
         another_user = FactoryBot.build(:user)
         another_user.email = @user.email
         another_user.valid?
-        # binding.pry
         expect(another_user.errors.full_messages).to include('Email has already been taken')
       end
       it 'パスワードが空欄だと保存できない' do
@@ -100,5 +99,46 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include("Birthday can't be blank")
       end
     end
+
+    context 'パスワード再設定' do
+      it 'パスワードが6文字以上半角英数字であれば再設定できる' do
+        @user.save
+        @user.password = 'new123'
+        @user.password_confirmation = 'new123'
+        expect(@user).to be_valid
+      end
+  
+      it 'パスワードが空欄でも再設定できない' do
+        @user.save
+        @user.password = ''
+        @user.password_confirmation = ''
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password can't be blank")
+      end
+
+      it 'パスワード（確認含む）が5文字以下だと再設定できない' do
+        @user.save
+        @user.password = 'new12'
+        @user.password_confirmation = 'new12'
+        @user.valid?
+        expect(@user.errors.full_messages).to include('Password is too short (minimum is 6 characters)')
+      end
+  
+      it 'パスワード（確認含む）が半角英数字でないと再設定できない' do
+        @user.save
+        @user.password = 'newpassword'
+        @user.password_confirmation = 'newpassword'
+        @user.valid?
+        expect(@user.errors.full_messages).to include('Password Include both letters and numbers')
+      end
+
+      it 'パスワード（確認）が空欄でも再設定できない' do
+        @user.save
+        @user.password = 'new123'
+        @user.password_confirmation = ''
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
+      end
+     end
   end
 end
