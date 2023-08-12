@@ -57,4 +57,7 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+    # 「Failure/Error: _query(sql, @query_options.merge(options))」というエラーを解消するために実装
+  # https://github.com/rails/rails/issues/32794
+  config.active_job.queue_adapter = :inline
 end
