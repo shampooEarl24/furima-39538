@@ -4,6 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+         has_many :items
          with_options presence: true do
           # 存在すること・確認用を含めて2回入力・6字以上はdeviseのデフォルト実装のため省略
           # 半角英数字（空文字NG）以外の場合には、メッセージを出す
