@@ -40,10 +40,9 @@ class ItemsController < ApplicationController
   def destroy
     if @item.user_id == current_user.id
       @item.destroy
-      redirect_to root_path
-    else
-      redirect_to root_path
     end
+   #出品者、出品者以外の人もトップページに遷移させることができる
+      redirect_to root_path
   end
   private
 
